@@ -1,4 +1,4 @@
-# MGT_TTT
+# MGT TTT
 
 ## A Traveller Trade Tool for MGT
 
