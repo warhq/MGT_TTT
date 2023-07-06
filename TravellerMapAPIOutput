@@ -1,0 +1,58 @@
+
+# API call?
+# https://travellermap.com/data/trojan%20reach/1305
+
+{"Worlds":[{"Name":"Gollere","Hex":"1305","UWP":"D574756-7","PBG":"720","Zone":"","Bases":"","Allegiance":"NaHu","Stellar":"F5 V","SS":"B","Ix":"{ -1 }","CalculatedImportance":-1,"Ex":"(967-2)","Cx":"[6646]","Nobility":"","Worlds":6,"ResourceUnits":-756,"Subsector":1,"Quadrant":0,"WorldX":-116,"WorldY":-35,"Remarks":"Ag Pi","LegacyBaseCode":"","Sector":"Trojan Reach","SubsectorName":"Egyrn","SectorAbbreviation":"Troj","AllegianceName":"Non-Aligned, Human-dominated"}]}
+
+# Worlds within jump range (2) of hex in sector
+# https://travellermap.com/api/jumpworlds?sector=Spinward%20Marches&hex=1433&jump=2
+
+{"Worlds":[{"Name":"Walston","Hex":"1232","UWP":"C544338-8","PBG":"302","Zone":"","Bases":"S","Allegiance":"CsIm","Stellar":"M2 V","SS":"N","Ix":"{ -2 }","CalculatedImportance":-2,"Ex":"(720-2)","Cx":"[3158]","Nobility":"","Worlds":8,"ResourceUnits":-28,"Subsector":13,"Quadrant":4,"WorldX":-117,"WorldY":-48,"Remarks":"Lo Varg7","LegacyBaseCode":"S","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Client state, Third Imperium"},{"Name":"Nirton","Hex":"1332","UWP":"X500000-0","PBG":"011","Zone":"R","Bases":"","Allegiance":"NaXX","Stellar":"M0 V","SS":"N","Ix":"{ -3 }","CalculatedImportance":-3,"Ex":"(200-5)","Cx":"[0000]","Nobility":"","Worlds":11,"ResourceUnits":-10,"Subsector":13,"Quadrant":4,"WorldX":-116,"WorldY":-48,"Remarks":"Ba Va Fo","LegacyBaseCode":"","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Non-Aligned, unclaimed"},{"Name":"Elixabeth","Hex":"1532","UWP":"B426467-8","PBG":"201","Zone":"","Bases":"N","Allegiance":"CsIm","Stellar":"M1 V M5 V","SS":"N","Ix":"{ -1 }","CalculatedImportance":-1,"Ex":"(732-1)","Cx":"[4358]","Nobility":"","Worlds":8,"ResourceUnits":-42,"Subsector":13,"Quadrant":4,"WorldX":-114,"WorldY":-48,"Remarks":"Ni O:1435","LegacyBaseCode":"N","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Client state, Third Imperium"},{"Name":"Milagro","Hex":"1632","UWP":"E31178A-7","PBG":"920","Zone":"","Bases":"","Allegiance":"NaHu","Stellar":"M2 V","SS":"N","Ix":"{ -2 }","CalculatedImportance":-2,"Ex":"(966+1)","Cx":"[9579]","Nobility":"","Worlds":15,"ResourceUnits":324,"Subsector":13,"Quadrant":4,"WorldX":-113,"WorldY":-48,"Remarks":"Ic Na Pi","LegacyBaseCode":"","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Non-Aligned, Human-dominated"},{"Name":"Flexos","Hex":"1233","UWP":"E5A1422-8","PBG":"610","Zone":"","Bases":"","Allegiance":"NaHu","Stellar":"M1 V M2 V","SS":"N","Ix":"{ -3 }","CalculatedImportance":-3,"Ex":"(731-5)","Cx":"[1114]","Nobility":"","Worlds":8,"ResourceUnits":-105,"Subsector":13,"Quadrant":4,"WorldX":-117,"WorldY":-47,"Remarks":"Fl He Ni","LegacyBaseCode":"","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Non-Aligned, Human-dominated"},{"Name":"Noctocol","Hex":"1433","UWP":"E7A5747-8","PBG":"602","Zone":"","Bases":"","Allegiance":"NaHu","Stellar":"F5 V M2 V","SS":"N","Ix":"{ -2 }","CalculatedImportance":-2,"Ex":"(B66-2)","Cx":"[7558]","Nobility":"","Worlds":15,"ResourceUnits":-792,"Subsector":13,"Quadrant":4,"WorldX":-115,"WorldY":-47,"Remarks":"Fl","LegacyBaseCode":"","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Non-Aligned, Human-dominated"},{"Name":"Forine","Hex":"1533","UWP":"D3129B8-A","PBG":"610","Zone":"","Bases":"","Allegiance":"NaHu","Stellar":"G9 V","SS":"N","Ix":"{ 2 }","CalculatedImportance":2,"Ex":"(C8C+2)","Cx":"[9B5A]","Nobility":"","Worlds":8,"ResourceUnits":2304,"Subsector":13,"Quadrant":4,"WorldX":-114,"WorldY":-47,"Remarks":"Hi Ic In Na","LegacyBaseCode":"","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Non-Aligned, Human-dominated"},{"Name":"Tarkine","Hex":"1434","UWP":"C566662-7","PBG":"310","Zone":"A","Bases":"S","Allegiance":"CsIm","Stellar":"M0 V M2 V","SS":"N","Ix":"{ 0 }","CalculatedImportance":0,"Ex":"(854-4)","Cx":"[2613]","Nobility":"","Worlds":9,"ResourceUnits":-640,"Subsector":13,"Quadrant":4,"WorldX":-115,"WorldY":-46,"Remarks":"Ag Ni Ri Da O:1435","LegacyBaseCode":"S","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Client state, Third Imperium"},{"Name":"Pagaton","Hex":"1634","UWP":"C769873-4","PBG":"913","Zone":"","Bases":"","Allegiance":"NaHu","Stellar":"F0 V","SS":"N","Ix":"{ 0 }","CalculatedImportance":0,"Ex":"(A76-3)","Cx":"[5821]","Nobility":"","Worlds":11,"ResourceUnits":-1260,"Subsector":13,"Quadrant":4,"WorldX":-113,"WorldY":-46,"Remarks":"Ri Ph","LegacyBaseCode":"","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Non-Aligned, Human-dominated"},{"Name":"Dallia","Hex":"1435","UWP":"B885883-9","PBG":"610","Zone":"","Bases":"","Allegiance":"CsIm","Stellar":"F2 V","SS":"N","Ix":"{ 2 }","CalculatedImportance":2,"Ex":"(B7B-1)","Cx":"[5A26]","Nobility":"","Worlds":9,"ResourceUnits":-847,"Subsector":13,"Quadrant":4,"WorldX":-115,"WorldY":-45,"Remarks":"Ga Ri Pa Ph","LegacyBaseCode":"","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Client state, Third Imperium"}]}
+
+# example code for 2d6 with modifiers according to a hex-number
+
+import json
+import random
+
+# Example JSON data
+data = {
+    "Worlds": [
+        {"Name": "Gollere", "Hex": "1305", "UWP": "D574756-7", "PBG": "720", "Zone": "", "Bases": "", "Allegiance": "NaHu"},
+        {"Name": "New Haven", "Hex": "1005", "UWP": "A000589-C", "PBG": "123", "Zone": "Am", "Bases": "N", "Allegiance": "ImDa"}
+    ]
+}
+
+# Define a dictionary of modifier values based on the 4th UWP character
+modifier_dict = {
+    "0": -2,
+    "1": -2,
+    "2": -2,
+    "3": -2,
+    "4": -1,
+    "5": -1,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 1,
+    "A": 1,
+    "B": 1,
+    "C": 1,
+    "D": 2,
+    "E": 2,
+    "F": 3
+}
+
+# Iterate over each world in the "Worlds" list
+for world in data["Worlds"]:
+    # Extract the UWP for the world
+    uwp = world["UWP"]
+    # Extract the 4th character from the UWP string
+    fourth_char = uwp[3]
+    # Look up the modifier value based on the 4th character
+    modifier = modifier_dict.get(fourth_char, 0)
+    # Roll 2d6 and add the modifier
+    roll = random.randint(1, 6) + random.randint(1, 6) + modifier
+    print(f"Roll for {world['Name']}: {roll}")
+
+
+{"Worlds":[{"Name":"Tarkine","Hex":"1434","UWP":"C566662-7","PBG":"310","Zone":"A","Bases":"S","Allegiance":"CsIm","Stellar":"M0 V M2 V","SS":"N","Ix":"{ 0 }","CalculatedImportance":0,"Ex":"(854-4)","Cx":"[2613]","Nobility":"","Worlds":9,"ResourceUnits":-640,"Subsector":13,"Quadrant":4,"WorldX":-115,"WorldY":-46,"Remarks":"Ag Ni Ri Da O:1435","LegacyBaseCode":"S","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Client state, Third Imperium"}]}
