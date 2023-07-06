@@ -1,0 +1,96 @@
+{
+  "Starport": [
+    {
+      "Class": "A",
+      "Quality": "Exellent",
+      "Berthing": "1d6*1000",
+      "Fuel": "Refined (Cr500/ton)",
+      "Facilities": "Shipyard (all) - repairs"
+    },
+    {
+      "Class": "B",
+      "Quality": "Good",
+      "Berthing": "1d6*500",
+      "Fuel": "Refined (Cr500/ton)",
+      "Facilities": "Shipyard (spacecraft) - repairs"
+    },
+    {
+      "Class": "C",
+      "Quality": "Routine",
+      "Berthing": "1d6*100",
+      "Fuel": "Unrefined (Cr100/ton)",
+      "Facilities": "Shipyard (smallcraft) - repairs"
+    },
+    {
+      "Class": "D",
+      "Quality": "Poor",
+      "Berthing": "1d6*10",
+      "Fuel": "Unrefined (Cr100/ton)",
+      "Facilities": "Limited repairs"
+    },
+    {
+      "Class": "E",
+      "Quality": "Frontier",
+      "Berthing": "Free",
+      "Fuel": "-",
+      "Facilities": "-"
+    },
+    {
+      "Class": "X",
+      "Quality": "Non",
+      "Berthing": "-",
+      "Fuel": "-",
+      "Facilities": "-"
+    }
+  ],
+
+/*  Define TAS World Classification Zones */
+
+    "tasZones" = [
+      {
+        "Class": "A",
+        "Description": "* AMBER ZONE *"
+      },
+      {
+        "Class": "R",
+        "Description": "|| RED ZONE ||"
+      }
+  ]
+
+/* Define System Bases */
+
+      "systemBases" = [
+          {
+            "Code": "S",
+            "Type": "Scout Base"
+          },
+          {
+            "Code": "N",
+            "Type": "Naval Base"
+          },
+          {
+            "Code": "W",
+            "Type": "Scout Way Station"
+          },
+          {
+            "Code": "D",
+            "Type": "Naval Depot"
+          },
+          {
+            "Code": "D",
+            "Type": "Zhodani"
+          },
+            {
+            "Code": "D",
+            "Type": "Research Station"
+          },
+            {
+            "Code": "D",
+            "Type": "Prison, Exile Camp"
+          },
+            {
+            "Code": "D",
+            "Type": "Penal Colony"
+          }
+      ]
+}

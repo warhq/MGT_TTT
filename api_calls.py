@@ -30,10 +30,10 @@ if response.status_code == 200:
 
     # Print the world information for each world in the data
     for world in data["Worlds"]:
-        print("World:", world["Name"])
-        print("UWP:", world["UWP"])
+        print("World:", world["Name"], "UWP:", world["UWP"], "Hex:", world["Hex"], "Sector:", world["SectorAbbreviation"])
+    #    print("UWP:", world["UWP"])
 
     # Print the URL of the generated map image
-#    print("Map URL:", data["mapurl"])
+#   print("Map URL:", data["mapurl"])
 else:
     print("Error making API call:", response.status_code)
