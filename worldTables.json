@@ -43,54 +43,48 @@
       "Facilities": "-"
     }
   ],
-
-/*  Define TAS World Classification Zones */
-
-    "tasZones" = [
-      {
-        "Class": "A",
-        "Description": "* AMBER ZONE *"
-      },
-      {
-        "Class": "R",
-        "Description": "|| RED ZONE ||"
-      }
+  "tasZones": [
+    {
+      "Class": "A",
+      "Description": "* AMBER ZONE *"
+    },
+    {
+      "Class": "R",
+      "Description": "|| RED ZONE ||"
+    }
+  ],
+  "systemBases": [
+    {
+      "Code": "S",
+      "Type": "Scout Base"
+    },
+    {
+      "Code": "N",
+      "Type": "Naval Base"
+    },
+    {
+      "Code": "W",
+      "Type": "Scout Way Station"
+    },
+    {
+      "Code": "D",
+      "Type": "Naval Depot"
+    },
+    {
+      "Code": "Z",
+      "Type": "Zhodani"
+    },
+    {
+      "Code": "R",
+      "Type": "Research Station"
+    },
+    {
+      "Code": "P",
+      "Type": "Prison, Exile Camp"
+    },
+    {
+      "Code": "X",
+      "Type": "Penal Colony"
+    }
   ]
-
-/* Define System Bases */
-
-      "systemBases" = [
-          {
-            "Code": "S",
-            "Type": "Scout Base"
-          },
-          {
-            "Code": "N",
-            "Type": "Naval Base"
-          },
-          {
-            "Code": "W",
-            "Type": "Scout Way Station"
-          },
-          {
-            "Code": "D",
-            "Type": "Naval Depot"
-          },
-          {
-            "Code": "D",
-            "Type": "Zhodani"
-          },
-            {
-            "Code": "D",
-            "Type": "Research Station"
-          },
-            {
-            "Code": "D",
-            "Type": "Prison, Exile Camp"
-          },
-            {
-            "Code": "D",
-            "Type": "Penal Colony"
-          }
-      ]
 }

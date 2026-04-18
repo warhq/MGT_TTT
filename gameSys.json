@@ -1,7 +1,4 @@
-/* Game System dictionary with look up table for MGT2e game-system data */
-
 {
-/* Dice modifiers for 0-9, A-F on the 2d6 system (MGT 2e for example) hex-based numbering system */
     "diceModStd": [
         {"0": -3},
         {"1": -2},
@@ -19,10 +16,7 @@
         {"D": 2},
         {"E": 2},
         {"F": 3}
-    ]
-
-/* Task effectivnes modifier as a result of a task rolls in 2d6 (MGT 2e for example) */
-
+    ],
     "taskEffectMod": [
         {"<6": -3},
         {"-5": -2},
@@ -38,6 +32,4 @@
         {"5": 1},
         {">6": 2}
     ]
-
 }
-
