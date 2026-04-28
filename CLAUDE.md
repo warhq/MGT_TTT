@@ -63,3 +63,11 @@ UWP (Universal World Profile) is a 9-character string like `"C566662-7"`. Positi
 ```
 
 Hex coordinates use a 4-digit `XXYY` format (e.g. `"1433"`). The `hex_distance` function in `main.py` computes Chebyshev distance on an offset grid.
+
+## Implementation Roadmap
+
+Features to be implemented in this order:
+
+1. **Passengers** — availability rolls, passage types (High/Middle/Basic/Low), costs per jump distance, DMs from starport class and world population
+2. **Freight lots** — Major/Minor/Incidental lot availability rolls, base freight costs per ton/jump, DMs from starport and trade codes
+3. **Speculative trade** — trade good tables, purchase and sale DM resolution, trade code interactions, profit/loss calculation
