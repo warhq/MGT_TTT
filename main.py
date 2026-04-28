@@ -14,8 +14,13 @@ exWorldInfo = '{"Worlds":[{"Name":"Gollere","Hex":"1305","UWP":"D574756-7","PBG"
 exWorldInfo2 = '{"Worlds":[{"Name":"Tarkine","Hex":"1434","UWP":"C566662-7","PBG":"310","Zone":"A","Bases":"S","Allegiance":"CsIm","Stellar":"M0 V M2 V","SS":"N","Ix":"{ 0 }","CalculatedImportance":0,"Ex":"(854-4)","Cx":"[2613]","Nobility":"","Worlds":9,"ResourceUnits":-640,"Subsector":13,"Quadrant":4,"WorldX":-115,"WorldY":-46,"Remarks":"Ag Ni Ri Da O:1435","LegacyBaseCode":"S","Sector":"Spinward Marches","SubsectorName":"District 268","SectorAbbreviation":"Spin","AllegianceName":"Client state, Third Imperium"}]}'
 starPortInfo = '{"Starport":[{"Class":"A","Quality":"Exellent","Berthing":"1d6*1000","Fuel":"Refined (Cr500/ton)","Facilities":"Shipyard (all) - repairs"},{"Class":"B","Quality":"Good","Berthing":"1d6*500","Fuel":"Refined (Cr500/ton)","Facilities":"Shipyard (spacecraft) - repairs"},{"Class":"C","Quality":"Routine","Berthing":"1d6*100","Fuel":"Unrefined (Cr100/ton)","Facilities":"Shipyard (smallcraft) - repairs"},{"Class":"D","Quality":"Poor","Berthing":"1d6*10","Fuel":"Unrefined (Cr100/ton)","Facilities":"Limited repairs"},{"Class":"E","Quality":"Frontier","Berthing":"Free","Fuel":"-","Facilities":"-"},{"Class":"X","Quality":"Non","Berthing":"-","Fuel":"-","Facilities":"-"}]}'
 
-# call api-funktion
-worlds = api_calls.data
+SECTOR = 'Spinward Marches'
+ORIGIN_HEX = '1433'
+JUMP_RANGE = 3
+
+worlds = api_calls.fetch_worlds(SECTOR, ORIGIN_HEX, JUMP_RANGE)
+if not worlds:
+    raise SystemExit("No world data available. Cannot continue.")
 
 # Convert the string into a dictionary
 # worlds = json.loads(worldInfo)
@@ -32,15 +37,15 @@ worldZones_dict = {z['Class']: z['Description'] for z in WorldTables['tasZones']
 worldBases_dict = {b['Code']: b['Type'] for b in WorldTables['systemBases']}
 
 # Test code for reading json string from TravellerMap.com, API call for world information
-worldName = worlds["Worlds"][0]["Name"]
-worldHex = worlds["Worlds"][0]["Hex"]
-worldUWP = worlds["Worlds"][0]["UWP"]
-worldBases = worlds["Worlds"][0]["Bases"]
-worldZone = worlds["Worlds"][0]["Zone"]
-worldRemarks = worlds["Worlds"][0]["Remarks"]
-worldAllegiance = worlds["Worlds"][0]["Allegiance"]
-worldSector = worlds["Worlds"][0]["Sector"]
-worldSubSector = worlds["Worlds"][0]["SubsectorName"]
+worldName = worlds[0]["Name"]
+worldHex = worlds[0]["Hex"]
+worldUWP = worlds[0]["UWP"]
+worldBases = worlds[0]["Bases"]
+worldZone = worlds[0]["Zone"]
+worldRemarks = worlds[0]["Remarks"]
+worldAllegiance = worlds[0]["Allegiance"]
+worldSector = worlds[0]["Sector"]
+worldSubSector = worlds[0]["SubsectorName"]
 
 # expand UWP to separate variables
 uwpStarport = worldUWP[0]
