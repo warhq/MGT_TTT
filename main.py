@@ -7,8 +7,7 @@ import json
 import random
 
 import api_calls
-
-import gameSys.json
+import passengers
 
 # Example string
 exWorldInfo = '{"Worlds":[{"Name":"Gollere","Hex":"1305","UWP":"D574756-7","PBG":"720","Zone":"","Bases":"","Allegiance":"NaHu","Stellar":"F5 V","SS":"B","Ix":"{ -1 }","CalculatedImportance":-1,"Ex":"(967-2)","Cx":"[6646]","Nobility":"","Worlds":6,"ResourceUnits":-756,"Subsector":1,"Quadrant":0,"WorldX":-116,"WorldY":-35,"Remarks":"Ag Pi","LegacyBaseCode":"","Sector":"Trojan Reach","SubsectorName":"Egyrn","SectorAbbreviation":"Troj","AllegianceName":"Non-Aligned, Human-dominated"}]}'
@@ -28,6 +27,9 @@ with open('gameSys.json','r') as file:
 
 with open('worldTables.json', 'r') as file:
     WorldTables = json.load(file)
+
+worldZones_dict = {z['Class']: z['Description'] for z in WorldTables['tasZones']}
+worldBases_dict = {b['Code']: b['Type'] for b in WorldTables['systemBases']}
 
 # Test code for reading json string from TravellerMap.com, API call for world information
 worldName = worlds["Worlds"][0]["Name"]
@@ -68,7 +70,10 @@ worldBasesCurrent = worldBases_dict.get(worldBases, 0)
 # RANDOMISING STUFF #
 # ================= #
 # berthing = random.randint(1, int(berthingRange.split('d')[1])) * int(berthingRange.split('*')[0])
-berthing = random.randint(1, 6) * int(berthingRange.split('*')[1])
+if berthingRange in ('Free', '-'):
+    berthing = 0
+else:
+    berthing = random.randint(1, 6) * int(berthingRange.split('*')[1])
 
 
 # Calculations
@@ -91,6 +96,9 @@ for hex_id in hex_ids:
     distances[hex_id] = distance
 
 print(distances)
+
+jump_distance = max(1, hex_distance(center_hex, worldHex))
+passenger_counts, passenger_revenue = passengers.find_passengers(uwpStarport, uwpPop, jump_distance)
 
 
 # Output tests
@@ -116,4 +124,12 @@ print()
 print(f"Expanded information:")
 print(f"         Bases:  {worldBasesCurrent or 'no known' }")
 print(f"          Zone:  {worldZoneCurrent or '-' }")  # {worldZone} #
+
+print()
+print(f"Passengers available (Jump-{jump_distance}):")
+for ptype, count in passenger_counts.items():
+    cost = passengers.PASSAGE_COSTS[ptype]
+    print(f"  {ptype:8} Passage: {count:2}  @ Cr{cost:>6,}/jump  =  Cr{count * cost * jump_distance:>7,}")
+print(f"  {'':38}------------")
+print(f"  {'Total potential revenue':38}Cr{passenger_revenue:>7,}")
 
