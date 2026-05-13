@@ -1,14 +1,17 @@
 """Icosahedral world-surface map generator for Mongoose Traveller 2e.
 
 `generate_world_map(uwp, ...)` renders a UWP-driven map of a world's surface
-as the unfolded 20-triangle icosahedron, with each face subdivided into smaller
-terrain cells whose physical scale is derived from world Size. A scale-reference
-hexagon (labelled with km per cell edge) and a color legend are drawn below
-the map.
+as the unfolded 20-triangle icosahedron in the World Builder's Handbook net
+layout: 5 north-cap triangles whose apices represent the north pole, a
+10-triangle equatorial zigzag band, and 5 south-cap triangles whose apices
+represent the south pole. Each face is subdivided into smaller terrain cells
+whose physical scale is derived from world Size. A scale-reference hexagon
+(labelled with km per cell edge) and a color legend are drawn below the map.
 
 Cell terrain (water / land / polar ice) is chosen from fractal value noise
 seeded deterministically by the UWP, then thresholded so the water fraction
-matches Hydrographics. The color palette is selected by Atmosphere.
+matches Hydrographics. The color palette is selected by Atmosphere. Polar ice
+is concentrated near the cap apices (y near 0 or near 3h on the net).
 
 Run standalone:
     python worldMap.py C566662-7 tarkine.png
@@ -135,35 +138,65 @@ class _ValueNoise:
 
 
 # ---------------------------------------------------------------------------
-# Icosahedron net: two horizontal zigzag strips of 10 triangles each.
-# Strip 1 = northern hemisphere, strip 2 = southern hemisphere.
+# Icosahedron net: World Builder's Handbook layout.
+#   Row 1 (y in [0, h])   : 5 north-cap triangles, apices at the north pole
+#   Row 2 (y in [h, 2h])  : 10-triangle equatorial band in zigzag
+#   Row 3 (y in [2h, 3h]) : 5 south-cap triangles, apices at the south pole
+# The 5 + 10 + 5 split is the proper net. South caps are x-offset by face_side/2
+# from the north caps — that's the antiprism twist, not a bug.
 # ---------------------------------------------------------------------------
 
 def _icosahedron_net(face_side: float, ox: float, oy: float):
-    h = face_side * math.sqrt(3) / 2
+    fs = face_side
+    h = fs * math.sqrt(3) / 2
     triangles = []
-    for strip in range(2):
-        sy = oy + strip * h
-        hemi = "N" if strip == 0 else "S"
-        for col in range(10):
-            x = ox + col * (face_side / 2)
-            if col % 2 == 0:
-                vertices = [
-                    (x + face_side / 2, sy),     # apex (top)
-                    (x, sy + h),                 # base-left
-                    (x + face_side, sy + h),     # base-right
-                ]
-                is_up = True
-            else:
-                vertices = [
-                    (x, sy),                     # base-left (top)
-                    (x + face_side, sy),         # base-right (top)
-                    (x + face_side / 2, sy + h), # apex (bottom)
-                ]
-                is_up = False
-            triangles.append((f"{hemi}{col + 1}", vertices, is_up))
-    width = 11 * face_side / 2
-    height = 2 * h
+
+    # North caps: 5 point-up triangles, apices at y=0 (north pole),
+    # bases at y=h sharing edges with band point-down triangles.
+    for k in range(5):
+        x = ox + k * fs
+        vertices = [
+            (x + fs / 2, oy),         # apex (north pole)
+            (x, oy + h),              # base-left
+            (x + fs, oy + h),         # base-right
+        ]
+        triangles.append((f"N{k + 1}", vertices, True))
+
+    # Equatorial band: 10 zigzag triangles between y=h and y=2h.
+    band_y = oy + h
+    for col in range(10):
+        x = ox + col * (fs / 2)
+        if col % 2 == 0:
+            # point-down: base shared with a north cap at y=h
+            vertices = [
+                (x, band_y),
+                (x + fs, band_y),
+                (x + fs / 2, band_y + h),
+            ]
+            triangles.append((f"B{col + 1}", vertices, False))
+        else:
+            # point-up: base shared with a south cap at y=2h
+            vertices = [
+                (x + fs / 2, band_y),
+                (x, band_y + h),
+                (x + fs, band_y + h),
+            ]
+            triangles.append((f"B{col + 1}", vertices, True))
+
+    # South caps: 5 point-down triangles, x-offset by fs/2,
+    # apices at y=3h (south pole), bases at y=2h sharing edges with band point-ups.
+    south_y = oy + 2 * h
+    for k in range(5):
+        x = ox + fs / 2 + k * fs
+        vertices = [
+            (x, south_y),
+            (x + fs, south_y),
+            (x + fs / 2, south_y + h),    # apex (south pole)
+        ]
+        triangles.append((f"S{k + 1}", vertices, False))
+
+    width = 11 * fs / 2
+    height = 3 * h
     return triangles, width, height
 
 
@@ -288,9 +321,12 @@ def generate_world_map(
     idx = min(int(len(sorted_nv) * hydro_frac), len(sorted_nv) - 1)
     water_threshold = sorted_nv[idx] if sorted_nv else 0.5
 
-    # ---------- pass 2: draw cells
+    # ---------- pass 2: draw cells.
+    # With the 5+10+5 net, lat_factor > ~0.66 lies inside the cap regions
+    # (north cap is y in [0, h] of a 3h-tall map). Picking 0.75 gives nicely
+    # tapered polar caps near the apex points.
     for poly, nv, lat_factor in cells:
-        if lat_factor > 0.82 and nv > water_threshold * 0.6:
+        if lat_factor > 0.75 and nv > water_threshold * 0.55:
             color = palette["ice"]
         elif nv < water_threshold:
             color = palette["water"]
