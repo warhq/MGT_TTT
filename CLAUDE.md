@@ -12,8 +12,11 @@ MGT TTT (Mongoose Traveller 2e Trade Tool) is a Python CLI application that gene
 # Run the application (note: hits the live travellermap.com API on every run)
 python main.py
 
-# Install dependencies (requests is the only external dependency)
-pip install requests
+# Generate a single world surface map without running the full app
+python worldMap.py C566662-7 tarkine.png
+
+# Install dependencies
+pip install -r requirements.txt
 
 # Lint (mirrors CI checks)
 flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
@@ -26,15 +29,17 @@ pytest
 pytest path/to/test_file.py::test_name
 ```
 
-CI (`.github/workflows/python-app.yml`) runs on Python 3.10 and triggers on push and pull-request to `main` only — other branches do not run CI. There is no `requirements.txt`; CI installs `flake8` and `pytest` directly and only `pip install -r requirements.txt` if the file exists, so add one if new runtime dependencies are introduced.
+CI (`.github/workflows/python-app.yml`) runs on Python 3.10 and triggers on push and pull-request to `main` only — other branches do not run CI. `requirements.txt` exists and CI installs from it; runtime deps are `requests` and `Pillow`. CI installs `flake8` and `pytest` separately.
 
 ## Architecture
 
-The app has two Python source files and two JSON data files. There is no package/module structure — everything runs as top-level scripts in the repo root.
+The app has three Python source files and two JSON data files. There is no package/module structure — everything runs as top-level scripts in the repo root.
 
-- **`api_calls.py`** — Builds a URL of the form `https://travellermap.com/data/{sector}/{hex}/jump/{distance}` (sector, subsector, hex, and jump distance are hard-coded constants) and makes a single HTTP GET. Exposes the parsed JSON as the module-level `data` variable. The response shape is `{"Worlds": [{...}, ...]}` where each world has `Name`, `Hex`, `UWP`, `Bases`, `Zone`, `Remarks`, `Allegiance`, `Sector`, `SubsectorName`, etc. **Import-time side effects:** simply `import api_calls` performs the network request and prints the full payload plus a per-world summary to stdout. Any test or refactor needs to either mock `requests.get` or restructure this into a function.
+- **`api_calls.py`** — Exposes `fetch_jump_worlds(sector, hex_id, jump) -> dict`. The URL is `https://travellermap.com/data/{sector}/{hex}/jump/{distance}`; sector is URL-encoded. Response shape is `{"Worlds": [{...}, ...]}` where each world has `Name`, `Hex`, `UWP`, `Bases`, `Zone`, `Remarks`, `Allegiance`, `Sector`, `SubsectorName`, etc. `DEFAULT_SECTOR`/`DEFAULT_HEX`/`DEFAULT_JUMP` constants hold the values previously hard-coded at import time. `python api_calls.py` runs a sample request.
 
-- **`main.py`** — Imports `api_calls.data`, loads the two JSON files, parses the UWP string (positional character offsets: index 0=Starport, 1=Size, 2=Atmo, 3=Hydro, 4=Pop, 5=Gov, 6=Law, 8=TL), looks up starport berthing costs, calculates hex-grid distances between worlds, and prints a formatted world summary. Note that `main.py` only ever inspects `worlds["Worlds"][0]` — it does not iterate the full result set.
+- **`main.py`** — Calls `api_calls.fetch_jump_worlds(...)`, loads the two JSON files, parses the UWP string (positional character offsets: index 0=Starport, 1=Size, 2=Atmo, 3=Hydro, 4=Pop, 5=Gov, 6=Law, 8=TL), looks up starport berthing costs, calculates hex-grid distances between worlds, prints a formatted world summary, and writes a surface map PNG via `worldMap.generate_world_map`. Only ever inspects `worlds["Worlds"][0]` — it does not iterate the full result set.
+
+- **`worldMap.py`** — Generates an icosahedral world surface map for a UWP. `generate_world_map(uwp, out_path=None, seed=None) -> PIL.Image.Image`. Renders the unfolded 20-triangle icosahedron as two horizontal zigzag strips, subdivides each face into N² small terrain cells (N scales with UWP Size: 4/6/8/10), and chooses cell terrain via fractal value noise seeded by the UWP. Hydrographics sets the water-area fraction (threshold picked to match exactly, via sorted-noise indexing). Atmosphere selects the palette (breathable / dusty / vacuum / exotic / corrosive). A "big hex" labelled with km-per-cell-edge, color swatches, and the world's UWP stats are drawn below the map. Same UWP always yields the same image (`seed` defaults to a SHA-256 hash of the UWP). The 2-strip layout means polar ice manifests as zigzag bands along the top/bottom edges rather than triangular caps — that's the layout's projection artifact, not a bug. Runnable: `python worldMap.py <UWP> [out.png]`.
 
 - **`gameSys.json`** — MGT2e lookup tables: `diceModStd` (hex digit → dice modifier, values 0–F → −3 to +3) and `taskEffectMod` (task roll result → effect modifier). Uses C-style `/* */` comments which are not valid JSON — use a comment-tolerant parser or strip comments before loading.
 
@@ -50,11 +55,9 @@ The starport class table is currently defined **twice**: as a hard-coded JSON st
 
 1. **`gameSys.json` and `worldTables.json`** both contain C-style `/* */` comments and `worldTables.json` uses `=` instead of `:` for two keys — standard `json.load()` will fail on both. These need to be fixed (remove comments, fix `=` → `:`) before the JSON loaders work. CI lint passes because flake8 doesn't validate JSON, but `python main.py` crashes immediately on the `open('gameSys.json')` call.
 
-2. **`main.py` line 11** has `import gameSys.json` which is invalid Python (you cannot `import` a `.json` file) — this is a syntax-level dead line that will raise `ModuleNotFoundError` before any other code runs. The actual JSON loading is done correctly via `open('gameSys.json')` on line 26. Remove the bogus import.
+2. **`worldZones_dict` and `worldBases_dict`** are referenced in `main.py` but never defined — the app will raise `NameError` at runtime. These need to be built from the `tasZones` and `systemBases` arrays in `worldTables.json` after that file is fixed.
 
-3. **`worldZones_dict` and `worldBases_dict`** are referenced on `main.py` lines 65–66 but never defined — the app will raise `NameError` at runtime. These need to be built from the `tasZones` and `systemBases` arrays in `worldTables.json` after that file is fixed.
-
-4. **Berthing cost randomisation** on `main.py:71` reads `berthingRange.split('*')[1]` — works for classes A–D whose formula is `"1d6*N"`, but starport classes E (`"Free"`) and X (`"-"`) will raise `IndexError`/`ValueError`. Needs a branch for non-formula berthing values.
+3. **Berthing cost randomisation** in `main.py` reads `berthingRange.split('*')[1]` — works for classes A–D whose formula is `"1d6*N"`, but starport classes E (`"Free"`) and X (`"-"`) will raise `IndexError`/`ValueError`. Needs a branch for non-formula berthing values.
 
 ## Data Model
 

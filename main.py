@@ -7,8 +7,7 @@ import json
 import random
 
 import api_calls
-
-import gameSys.json
+import worldMap
 
 # Example string
 exWorldInfo = '{"Worlds":[{"Name":"Gollere","Hex":"1305","UWP":"D574756-7","PBG":"720","Zone":"","Bases":"","Allegiance":"NaHu","Stellar":"F5 V","SS":"B","Ix":"{ -1 }","CalculatedImportance":-1,"Ex":"(967-2)","Cx":"[6646]","Nobility":"","Worlds":6,"ResourceUnits":-756,"Subsector":1,"Quadrant":0,"WorldX":-116,"WorldY":-35,"Remarks":"Ag Pi","LegacyBaseCode":"","Sector":"Trojan Reach","SubsectorName":"Egyrn","SectorAbbreviation":"Troj","AllegianceName":"Non-Aligned, Human-dominated"}]}'
@@ -16,7 +15,9 @@ exWorldInfo2 = '{"Worlds":[{"Name":"Tarkine","Hex":"1434","UWP":"C566662-7","PBG
 starPortInfo = '{"Starport":[{"Class":"A","Quality":"Exellent","Berthing":"1d6*1000","Fuel":"Refined (Cr500/ton)","Facilities":"Shipyard (all) - repairs"},{"Class":"B","Quality":"Good","Berthing":"1d6*500","Fuel":"Refined (Cr500/ton)","Facilities":"Shipyard (spacecraft) - repairs"},{"Class":"C","Quality":"Routine","Berthing":"1d6*100","Fuel":"Unrefined (Cr100/ton)","Facilities":"Shipyard (smallcraft) - repairs"},{"Class":"D","Quality":"Poor","Berthing":"1d6*10","Fuel":"Unrefined (Cr100/ton)","Facilities":"Limited repairs"},{"Class":"E","Quality":"Frontier","Berthing":"Free","Fuel":"-","Facilities":"-"},{"Class":"X","Quality":"Non","Berthing":"-","Fuel":"-","Facilities":"-"}]}'
 
 # call api-funktion
-worlds = api_calls.data
+worlds = api_calls.fetch_jump_worlds(
+    api_calls.DEFAULT_SECTOR, api_calls.DEFAULT_HEX, api_calls.DEFAULT_JUMP,
+)
 
 # Convert the string into a dictionary
 # worlds = json.loads(worldInfo)
@@ -116,4 +117,8 @@ print()
 print(f"Expanded information:")
 print(f"         Bases:  {worldBasesCurrent or 'no known' }")
 print(f"          Zone:  {worldZoneCurrent or '-' }")  # {worldZone} #
+
+map_path = f"{worldName}_surface.png"
+worldMap.generate_world_map(worldUWP, out_path=map_path)
+print(f"\nWorld surface map written to {map_path}")
 

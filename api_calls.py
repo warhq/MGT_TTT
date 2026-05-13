@@ -1,39 +1,36 @@
-# test of api-calls to travellermap.com
+"""HTTP wrappers for the travellermap.com data API.
+
+Functions here perform live HTTP requests; importing this module no longer
+triggers network I/O. Callers must invoke `fetch_jump_worlds()` explicitly.
+"""
+
+from urllib.parse import quote
+
 import requests
 
-# Set the base URL for the API call
-url = "https://travellermap.com"
+BASE_URL = "https://travellermap.com"
 
-# Set the parameters for the API call
-# params = {
-#    "sector": "/Spiward%20Marches",
-#    "subsector": "/District%20268"
-#    "hex": "/1433",
-#    "jump": "3",
-#    "format": "json"
-# }
-apiCallType = "/data"
-sector = "/Spinward%20Marches"
-subsector = "/District%20268"
-hex = "/1433"
+DEFAULT_SECTOR = "Spinward Marches"
+DEFAULT_HEX = "1433"
+DEFAULT_JUMP = 3
 
-# Make the API call and store the response in a variable
-# response = requests.get(url + "/data", params=params)
-response = requests.get(url + apiCallType + sector + hex + "/jump/3")
 
-# Check if the response was successful (status code 200)
-if response.status_code == 200:
-    # Get the JSON data from the response
-    data = response.json()
+def fetch_jump_worlds(sector: str, hex_id: str, jump: int) -> dict:
+    """GET worlds within `jump` parsecs of `hex_id` in `sector`.
 
-    print(data)
+    Returns the parsed JSON, shape `{"Worlds": [{...}, ...]}`.
+    Raises `requests.HTTPError` on non-2xx responses.
+    """
+    url = f"{BASE_URL}/data/{quote(sector)}/{hex_id}/jump/{jump}"
+    response = requests.get(url, timeout=30)
+    response.raise_for_status()
+    return response.json()
 
-    # Print the world information for each world in the data
+
+if __name__ == "__main__":
+    data = fetch_jump_worlds(DEFAULT_SECTOR, DEFAULT_HEX, DEFAULT_JUMP)
     for world in data["Worlds"]:
-        print("World:", world["Name"], "UWP:", world["UWP"], "Hex:", world["Hex"], "Sector:", world["SectorAbbreviation"])
-    #    print("UWP:", world["UWP"])
-
-    # Print the URL of the generated map image
-#   print("Map URL:", data["mapurl"])
-else:
-    print("Error making API call:", response.status_code)
+        print(
+            f"World: {world['Name']:<16} UWP: {world['UWP']:<10} "
+            f"Hex: {world['Hex']} Sector: {world['SectorAbbreviation']}"
+        )
